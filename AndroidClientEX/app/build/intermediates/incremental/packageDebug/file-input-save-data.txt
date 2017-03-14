@@ -1,0 +1,33 @@
+#Internal package file, do not edit.
+#Wed Mar 08 06:24:17 CST 2017
+2.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+5.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex
+5.set=DEX
+3.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+6.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-hdpi-v4\\test2.jpg
+2.set=ANDROID_RESOURCE
+4.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+7.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\menu-v11\\main.xml
+7.set=ANDROID_RESOURCE
+count=10
+0.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\activity_main.xml
+5.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
+8.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\resources.arsc
+4.set=ANDROID_RESOURCE
+6.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+1.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-hdpi-v4\\test1.jpg
+9.set=ANDROID_RESOURCE
+9.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\ic_launcher.png
+1.set=ANDROID_RESOURCE
+7.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+2.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\AndroidManifest.xml
+6.set=ANDROID_RESOURCE
+0.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+8.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+3.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout-xlarge-v4\\activity_main.xml
+3.set=ANDROID_RESOURCE
+1.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+9.base=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_
+4.file=D\:\\AndroidStudioProjects\\AndroidClient\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\menu\\main.xml
+8.set=ANDROID_RESOURCE
+0.set=ANDROID_RESOURCE
