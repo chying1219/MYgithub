@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
 	private OnListener listener;
 	private static boolean flag = true;
 	Socket socket = null;
+	DataOutputStream toServer = null;
 
 	public interface OnListener {
 		void listener(String text);
@@ -91,8 +92,8 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				encodeImage();
-				//SendImge();
+				// encodeImage();
+				Send2CSharp();
 			}
 		});
 
@@ -130,6 +131,9 @@ public class MainActivity extends Activity {
 				out1 = new PrintWriter(socket.getOutputStream(), true);
 				//out1.print("Hello server!");
 				out1.flush();
+				// Create an output stream to send data to the server
+				toServer = new DataOutputStream(socket.getOutputStream());
+
 
 				BufferedReader in1 = new BufferedReader(new InputStreamReader(
 						socket.getInputStream()));
@@ -318,9 +322,48 @@ public class MainActivity extends Activity {
 
 			// dataOutputStream.close();
 			imgImageView.setImageBitmap(showImg);
-			// int a = 1;
+
 
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void Send2CSharp() {
+
+		try {
+			// 影像的資料大小
+			Bitmap ourbitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test1);
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			ourbitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+			byte[] b = stream.toByteArray(); // 要送出的圖片資料
+
+			int size = b.length; // 1018836
+
+
+			// int size = 65536 * 6; // 測試送出 65536*6的資料量
+			byte[] szbuf = new byte[4]; // 必須先將資料量的大小(int)轉成byte[4]送給server，以便其配置接收緩衝區
+			for (int i = 0; i < 4; i++) // 將int轉成4個bytes的陣列
+				szbuf[i] = (byte) (0xff & (size >> (8 * i)));
+			toServer.write(szbuf); // 送出資料量大小到server
+			toServer.flush();
+			/*
+			byte[] buf = new byte[size]; // 配置要送出的資料（byte[65536*6]）
+			for (int i = 0; i < size; i++) // 隨便設定資料內容，以便檢驗server收到內容之正確性
+				//buf[i] = (byte) (i & 0xff);
+				buf[i] = (byte) (b[i] & 0xff);
+			// Send the radius to the server
+			toServer.write(buf, 0, size); // 送出資料
+			*/
+			toServer.write(b, 0, size); // 送出資料
+			toServer.flush();
+
+
+			imgImageView.setImageBitmap(ourbitmap);
+
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

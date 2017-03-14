@@ -39,3 +39,11 @@ D:\VisualStdioProjects\SERVER_GameSocket備份\SERVER_GameSocket3\GameSocket\obj
 D:\VisualStdioProjects\SERVER_GameSocket備份\SERVER_GameSocket3\GameSocket\obj\Debug\GameSocket.SocketT2h.resources
 D:\VisualStdioProjects\SERVER_GameSocket備份\SERVER_GameSocket3\GameSocket\obj\Debug\GameSocket.Properties.Resources.resources
 D:\VisualStdioProjects\SERVER_GameSocket備份\SERVER_GameSocket3\GameSocket\obj\Debug\GameSocket.csproj.GenerateResource.Cache
+D:\MYgithub\MYgithub\GameSocket\obj\Debug\GameSocket.exe
+D:\MYgithub\MYgithub\GameSocket\obj\Debug\GameSocket.pdb
+D:\MYgithub\MYgithub\GameSocket\obj\Debug\GameSocket.csprojResolveAssemblyReference.cache
+D:\MYgithub\MYgithub\GameSocket\obj\Debug\GameSocket.SocketT2h.resources
+D:\MYgithub\MYgithub\GameSocket\obj\Debug\GameSocket.Properties.Resources.resources
+D:\MYgithub\MYgithub\GameSocket\obj\Debug\GameSocket.csproj.GenerateResource.Cache
+D:\MYgithub\MYgithub\GameSocket\bin\Debug\GameSocket.exe
+D:\MYgithub\MYgithub\GameSocket\bin\Debug\GameSocket.pdb

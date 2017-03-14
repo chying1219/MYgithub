@@ -29,7 +29,7 @@ namespace GameSocket
     }
     public partial class frm_Server : Form
     {
-        private byte[] _buffer = new byte[8192];
+        private byte[] _buffer = new byte[65536];
         byte[] imgBuffer;
         byte[] aImage = new byte[950000];
         Image receivedImag;
@@ -80,16 +80,19 @@ namespace GameSocket
             _serverSocket.BeginAccept(new AsyncCallback(AppceptCallback), null);
         }
 
+
         private void ReceiveCallback(IAsyncResult ar)
         {
+            byte[] recBuffer;
             Socket socket = (Socket)ar.AsyncState;
             if (socket.Connected)
             {
                 int received;
+                byte[] sz = new byte[4]; // 備妥準備接收client最初送過來的4個bytes的buffer
+
                 try
                 {
-                    // 接收第一批的資料 // 每次上限接收1460byte
-                    received = socket.EndReceive(ar); // 得到新的socket來client端讀取data
+                    received = socket.EndReceive(ar); // 接收4個bytes // 得到新的socket來client端讀取data
                 }
                 catch (Exception)
                 {
@@ -104,41 +107,26 @@ namespace GameSocket
                     }   // deleted in the list
                     return;
                 }
-                if (received != 0) // 表示有東西
+                if (received != 0) // 有收到
                 {
-                    // 接收第一批的資料
+                    // 接收第一批的資料（4個bytes）
                     byte[] buffer = new byte[received];
-                    Array.Copy(_buffer, buffer, received);
-
-                    // 宣告資料大小，共分兩批送進來               
-                    totalBytes = buffer[0] * 256 + buffer[1]; // byte[0]及byte[1]存放所有資料大小
-                    imgBuffer = new byte[totalBytes]; // 扣掉byte[0]和byte[1]，剩下為圖片資料
-
-                    // 第二批，即扣掉1460的剩餘資料
-                    byte[] recBuffer = new byte[totalBytes - (received - 2)];
-                    int recv = socket.Receive(recBuffer);
-
-                    // 把兩批資料組合起來，做圖片base64字串解碼
-                    Array.Copy(buffer, 2, imgBuffer, 0, buffer.Length - 2);
-                    Array.Copy(recBuffer, 0, imgBuffer, buffer.Length - 2, recBuffer.Length);
-
-                    Array.Copy(imgBuffer, 0, aImage, 0, imgBuffer.Length);
-
-                    string reponse = "ok";
-                    Sendata(socket, reponse); // 告訴對方我收到了
-
-                    /*
-                    String base64String = Encoding.ASCII.GetString(imgBuffer, 0, imgBuffer.Length);
-                    byte[] bytes = Convert.FromBase64String(base64String);
-                    
+                    Array.Copy(_buffer, buffer, received); //copy 4個bytes到buffer中
+                    int size = 0;
+                    size = (int)(buffer[0] + buffer[1]*Math.Pow(256,1) + buffer[2] * Math.Pow(256, 2) + buffer[3] * Math.Pow(256, 3));
+                    // 開始進入迴圈接收影像資料，因為socket可能無法一次完成接收
+                    recBuffer = new byte[size]; // 配置buffer準備接收image
+                    int total = 0, recv; // total為已接收資料量
+                    while (total != size) // 迴圈持續，直到total == size，表示以全數接收完畢
+                    {
+                        recv = socket.Receive(recBuffer, total, size - total, SocketFlags.None); // 反覆接收未完成接收的影像資料
+                        total += recv; // 累加新收資料量到total
+                    }
                     // 另存圖片
-                    MemoryStream ms = new MemoryStream(bytes);
+                    MemoryStream ms = new MemoryStream(recBuffer);
                     Image receivedImag = Image.FromStream(ms);
                     string name = "d:\\" + SaveNameFormat() + ".jpg";
-                    // receivedImag.Save("d:\\myBitmap.jpg");
-                    receivedImag.Save(name);
-                    */
-
+                    receivedImag.Save(name); // ("d:\\myBitmap.jpg");
                 }
                 else
                 {// 如果receive沒東西了
@@ -152,31 +140,14 @@ namespace GameSocket
                     }
                 }
 
-                //if (received != 0)
-                //{
-                //    byte[] dataBuf = new byte[received];
-                //    Array.Copy(_buffer, dataBuf, received);
-                //    string text = Encoding.ASCII.GetString(dataBuf); // 接收data
-                //    lb_stt.Text = "Text received: " + text;
-                //    string reponse = string.Empty;
-                //    for (int i = 0; i < __ClientSockets.Count; i++)
-                //    {
-                //        if (socket.RemoteEndPoint.ToString().Equals(__ClientSockets[i]._Socket.RemoteEndPoint.ToString()))
-                //        {
-                //            rich_Text.AppendText("\n" + __ClientSockets[i]._Name + ": " + text);
-                //        }
-                //    }
-                //    if (text == "bye")
-                //    {
-                //        return;
-                //    }
-                //    reponse = "server received" + text;
-                //    Sendata(socket, reponse); // 告訴對方我收到了
-                //}
+                
+
+                int aaa = 1;
             }
             // 得到剩餘資料
-            socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket); // 從這裡接收
+            // socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket); // 從這裡接收
         }
+
         void Sendata(Socket socket, string noidung)
         {   // 告訴android 我收到了
             byte[] data = Encoding.ASCII.GetBytes(noidung);
@@ -211,25 +182,7 @@ namespace GameSocket
         {
             Image pic = receivedImag;
         }
-
-        /*
-        public Image Base64ToImage(byte[] imgBuffer)
-        {
-            String base64String = Encoding.ASCII.GetString(imgBuffer, 0, imgBuffer.Length);
-            // Convert Base64 String to byte[]
-            byte[] bytes = Convert.FromBase64String(base64String);
-
-            // 另存圖片
-            MemoryStream ms = new MemoryStream(bytes);
-            Image receivedImag = Image.FromStream(ms);
-            string name = "d:\\" + SaveNameFormat() + ".jpg";
-            // receivedImag.Save("d:\\myBitmap.jpg");
-            receivedImag.Save(name);
-
-            return receivedImag;
-        }
-        */
-
+        
         public string SaveNameFormat()
         {   // 記錄當時時間，地點及房號待補
             string place;
@@ -237,6 +190,8 @@ namespace GameSocket
             string time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             return time;
         }
+
+
 
     }
 }
